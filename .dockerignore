@@ -1,0 +1,9 @@
+# Тут перечислены отправляемые данные демону Docker для сборки образа.
+# Сборка образа Docker: https://docs.docker.com/engine/reference/builder/#dockerignore-file
+
+# Игнорируем всё: (Используем как белый список)
+*
+
+# Передаваемые файлы:
+!bin
+!ssl

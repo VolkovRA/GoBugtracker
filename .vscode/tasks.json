@@ -1,0 +1,123 @@
+
+{
+    "version": "2.0.0",
+    "tasks": [
+
+        // Компиляция linux:
+        {
+            "label": "compile linux",
+            "type": "shell",
+            "command": "go",
+            "args": [
+                "build",
+                "-o", "../bin/bugtracker.bin",
+            ],
+            "options": {
+                "cwd": "src",
+                "env": {
+                    "GOOS": "linux",
+                    "GOARCH": "amd64",
+                }
+            },
+            "group": "none",
+            "problemMatcher": [
+                "$go"
+            ],
+            "presentation": {
+                "clear": true
+            },
+        },
+
+        // Компиляция win:
+        {
+            "label": "compile win",
+            "type": "shell",
+            "command": "go",
+            "args": [
+                "build",
+                "-o", "../bin/bugtracker.exe",
+            ],
+            "options": {
+                "cwd": "src",
+                "env": {
+                    "GOOS": "windows",
+                    "GOARCH": "amd64",
+                }
+            },
+            "group": "none",
+            "problemMatcher": [
+                "$go"
+            ],
+            "presentation": {
+                "clear": true
+            },
+        }
+
+        // Выгрузка образа:
+        {
+            "label": "image push",
+            "type": "shell",
+            "command": "docker",
+            "args": [
+                "push",
+                "rvolkov/bugtracker"
+            ],
+            "presentation": {
+                "clear": true
+            },
+            "problemMatcher": [],
+        },
+
+        // Сборка образа:
+        {
+            "label": "image build",
+            "type": "shell",
+            "command": "docker",
+            "args": [
+                "build",
+                ".",
+                "-t",
+                "rvolkov/bugtracker"
+            ],
+            "presentation": {
+                "clear": true
+            },
+            "problemMatcher": [],
+        },
+
+        // Тестовые запуск Docker'а на локальном хосте: (ВКонтакте)
+        {
+            "label": "composer up",
+            "type": "shell",
+            "command": "docker-compose",
+            "args": [
+                "-f", "docker-compose.yml",
+                "--project-name", "bugtracker",
+                "--log-level", "DEBUG",
+                "up",
+            ],
+            "presentation": {
+                "clear": true
+            },
+            "problemMatcher": [],
+        },
+
+        // Тестовый прогон: компиляция, сборка образа, запуск
+        {
+            "label": "test",
+            "dependsOrder": "sequence",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "dependsOn": [
+                "compile linux",
+                "image build",
+                "composer up",
+            ],
+            "problemMatcher": [
+            ],
+            "detail": "Тестовый прогон: компиляция, сборка образа, запуск",
+        },
+    ]
+}

@@ -1,0 +1,19 @@
+# Локальная конфигурация сервера для отладки во время разработки.
+# Используется для запуска сервера на произвольной машине.
+
+version: '3.8'
+services:
+
+    # Сервер:
+    server:
+        container_name: server
+        image: rvolkov/bugtracker
+        restart: always
+        ports:
+            - "80:80"
+            - "443:443"
+        environment:
+            HOST: "smtp.yandex.ru"
+            PORT: "587"
+            PSWD: "******"
+            EMAIL: "example@yandex.ru"
